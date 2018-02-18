@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SportStore</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous" />
+    <script src="Scripts/modernizr-2.6.2.js"></script>
+    <script src="Scripts/jquery-3.3.1.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script src="Scripts/knockout-3.4.2.js"></script>
+    <script src="Scripts/storeAjax.js"></script>
+    <script src="Scripts/models/storeModel.js"></script>
+    <script src="Scripts/models/storeCustomerModel.js"></script>
+    <script src="Scripts/controllers/storeCommonController.js"></script>
+    <script src="Scripts/controllers/storeProductsController.js"></script>
+    <script src="Scripts/controllers/storeOrdersController.js"></script>
+    <script src="Scripts/controllers/storeCustomerController.js"></script>
+    <title>Tienda</title>
+    <style>
+        body {
+            padding-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container body-content">
+        <div class="navbar navbar-inverse" role="navigation">
+            <a class="navbar-brand" href="#">Tienda</a>
+            <div class="navbar-right" style="margin: 0 10px">
+            <button class="btn btn-default btn-xs navbar-btn" data-bind="click: setView.bind($data, 'checkout'), enable: customerModel.cartCount() > 0">Checkout</button>
+        </div>
+            <div class="navbar-text navbar-right">
+        <b>Carrito:</b>
+        <span data-bind="text: customerModel.cartCount()"></span> Item(s),
+        <span data-bind="text: '$' + customerModel.cartTotal().toFixed(2)"></span>
+    </div>
+        </div>
+        <div id="categories" class="col-xs-3">
+            <button class="btn btn-block btn-default btn-lg" data-bind="click: setCategory.bind(null)">Home</button>
+        <div data-bind="foreach: customerModel.productCategories()">
+            <button class="btn btn-block btn-default btn-lg" data-bind="click: setCategory.bind($data), text: $data, css: { 'btn-primary' : $data == customerModel.selectedCategory() }"></button>
+        </div>
+    </div>
+        <div class="alert alert-danger col-xs-8" data-bind="visible: model.gotError(), text: model.error()"></div>
+        <div class="col-xs-8">
+        <div class="row panel" data-bind="visible: customerModel.currentView() == 'list'">
+            <div data-bind="foreach: customerModel.filteredProducts()">
+                <div class="well">
+                    <h3>
+                        <strong data-bind="text: $data.nombre"></strong>
+                        <span class="pull-right label label-primary" data-bind="text: ('$' + $data.precio.toFixed(2))"></span>
+                    </h3>
+                    <span class="lead" data-bind="text: $data.descripcion"></span>
+                    <div class="pull-right">
+                        <button class="btn btn-success" data-bind="click: addToCart.bind($data)">Añadir al carrito</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row panel" data-bind="visible: customerModel.currentView() == 'cart'">
+            <h2>Su carrito</h2>
+            <div class="panel panel-primary">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Cantidad</th>
+                            <th>Item</th>
+                            <th>Precio</th>
+                            <th class="text-right">Subtotal</th>
+                            <td></td>
+                        </tr>
+                    </thead>
+                    <tbody data-bind="foreach: customerModel.cart()">
+                        <tr>
+                            <td data-bind="text: $data.count"></td>
+                            <td data-bind="text: $data.product.nombre"></td>
+                            <td data-bind="text: '$' + $data.product.precio.toFixed(2)"></td>
+                            <td class="text-right" data-bind="text: '$' + ($data.count * $data.product.precio).toFixed(2)"></td>
+                            <td><button class="btn btn-xs btn-danger" data-bind="click: removeFromCart.bind($data)">Quitar</button></td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="2"></td>
+                            <td>Total</td>
+                            <th class="text-right" data-bind="text: '$' + customerModel.cartTotal().toFixed(2)"></th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+        <div class="row panel" data-bind="visible: customerModel.currentView() == 'checkout'">
+            <h2>Su Orden</h2>
+            <div class="form-group">
+                <label>Ingrese su nombre:</label>
+                <input class="form-control" data-bind="value: model.username" />
+            </div>
+            <div class="panel panel-primary">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Cantidad</th>
+                            <th>Item</th>
+                            <th>Precio</th>
+                            <th class="text-right">Subtotal</th>
+                            <td></td>
+                        </tr>
+                    </thead>
+                    <tbody data-bind="foreach: customerModel.cart()">
+                        <tr>
+                            <td data-bind="text: $data.count"></td>
+                            <td data-bind="text: $data.product.nombre"></td>
+                            <td data-bind="text: '$' + $data.product.precio.toFixed(2)"></td>
+                            <td class="text-right" data-bind="text: '$' + ($data.count * $data.product.precio).toFixed(2)"></td>
+                            <td><button class="btn btn-xs btn-danger" data-bind="click: removeFromCart.bind($data)">Quitar</button></td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="2"></td>
+                            <td>Total</td>
+                            <th class="text-right" data-bind="text: '$' + customerModel.cartTotal().toFixed(2)"></th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+            <div class="text-center">
+                <button class="btn btn-primary"
+                        data-bind="click: setView.bind($data, 'list')">
+                    Cancelar
+                </button>
+                <button class="btn btn-danger"
+                        data-bind="click: placeOrder.bind($data)">
+                    Realizar pedido
+                </button>
+            </div>
+        </div>
+        <div class="row panel" data-bind="visible: customerModel.currentView() == 'thankyou'">
+            <h2>Gracias!</h2>
+            Gracias por hacer su pedido. Enviaremos tus productos los mas pronto posible
+        </div>
+    </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,7 @@
+com\mycompany\entities\Tecnologia.class
+com\mycompany\store\Productos.class
+com\mycompany\operations\OperProducto.class
+com\mycompany\operations\TiendaManagerDB.class
+com\mycompany\interfaces\IOperProducto.class
+com\mycompany\entities\Producto.class
+com\mycompany\entities\Deportivo.class
