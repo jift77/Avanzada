@@ -17,6 +17,8 @@ public abstract class Producto  {
     private String Descripcion;
     private String Categoria;
     
+    public Producto () {}
+    
     public Producto(int id, String nombre, long precio, String descripcion, String categoria)
     {
         this.Nombre = nombre;

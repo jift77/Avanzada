@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin</title>
+    <link href="~/Content/Site.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous" />
+    <script src="Scripts/modernizr-2.6.2.js"></script>
+    <script src="Scripts/jquery-3.3.1.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script src="Scripts/knockout-3.4.2.js"></script>
+    <script src="Scripts/storeAjax.js"></script>
+    <script src="Scripts/models/storeModel.js"></script>
+    <script src="Scripts/controllers/storeCommonController.js"></script>
+    <script src="Scripts/controllers/storeProductsController.js"></script>
+    <script src="Scripts/models/storeAdminModel.js"></script>
+    <script src="Scripts/controllers/storeAdminController.js"></script>
+    <style>
+        body {
+            padding-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container body-content">
+        <div class="navbar navbar-inverse" role="navigation">
+            <a class="navbar-brand" href="#">Tienda</a>
+        </div>
+        <div class="alert alert-danger text-center"
+             data-bind="visible: model.gotError(), text: model.error()">
+        </div>
+        <div>
+            <div class="text-center" data-bind="visible: adminModel.currentView() == 'signin'">
+                <div class="form-group">
+                    <label>Login</label>
+                    <input data-bind="value: model.username" />
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" data-bind="value: model.password" />
+                </div>
+                <button class="btn btn-primary"
+                        data-bind="click: authenticateUser">
+                    Sign In
+                </button>
+            </div>
+            <div data-bind="visible: adminModel.currentView() == 'productList'">
+                <div id="categories" class="col-xs-3">
+                    <button class="btn btn-block btn-default btn-lg"
+                            data-bind="click: setListMode.bind($data, 'products')">
+                        Productos
+                    </button>
+                </div>
+                <div class="col-xs-8" data-bind="visible: adminModel.listMode() == 'products'">
+                    <div class="panel panel-primary">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nombre</th>
+                                    <th>Categoria</th>
+                                    <th>Precio</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody data-bind="foreach: model.products()">
+                                <tr>
+                                    <td data-bind="text: $data.id"></td>
+                                    <td data-bind="text: $data.nombre"></td>
+                                    <td data-bind="text: $data.categoria"></td>
+                                    <td data-bind="text: '$' + $data.precio.toFixed(2)"
+                                        class="text-right"></td>
+                                    <td>
+                                        <button class="btn btn-xs btn-danger"
+                                                data-bind="click: removeProduct">
+                                            Quitar
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="text-center">
+                        <button class="btn btn-primary"
+                                data-bind="click: setListMode.bind($data, 'addProduct')">
+                            Agregar Producto
+                        </button>
+                    </div>
+                </div>
+                <div class="col-xs-8" data-bind="visible: adminModel.listMode() == 'addProduct'">
+                    <h2>Agregar Producto</h2>
+                    <div class="form-group">
+                        <label>Nombre</label>
+                        <input class="form-control" data-bind="value: adminModel.newProduct.nombre" />
+                    </div>
+                    <div class="form-group">
+                        <label>Descripcion</label>
+                        <input class="form-control" data-bind="value: adminModel.newProduct.descripcion" />
+                    </div>
+                    <div class="form-group">
+                        <label>Categoria</label>
+                        <input class="form-control" data-bind="value: adminModel.newProduct.categoria" />
+                    </div>
+                    <div class="form-group">
+                        <label>Precio</label>
+                        <input class="form-control" data-bind="value: adminModel.newProduct.precio" />
+                    </div>
+                    <div class="text-center">
+                        <button class="btn btn-primary"
+                                data-bind="click: setListMode.bind($data, 'products')">
+                            Cancelar
+                        </button>
+                        <button class="btn btn-danger" data-bind="click: createProduct">Crear</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

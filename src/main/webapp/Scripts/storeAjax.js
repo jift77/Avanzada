@@ -1,9 +1,13 @@
-﻿var sendRequest = function (url, verb, data, options) {
-    var requestOptions = options || {};
-    requestOptions.type = verb;
-    if (data) { requestOptions.data = data };
-
-    return $.ajax(url, requestOptions);
+﻿var sendRequest = function (url, verb, data) {
+    var settings = {
+        url: url,
+        method: verb,
+        "headers": {
+          "Content-Type" : "application/json"
+        },
+        data : JSON.stringify(data)
+      }
+    return $.ajax(settings); 
 }
 
 var setDefaultCallbacks = (successCallback, errorCallback) => {

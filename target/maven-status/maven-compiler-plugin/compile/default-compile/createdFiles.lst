@@ -1,7 +1,9 @@
 com\mycompany\entities\Tecnologia.class
-com\mycompany\store\Productos.class
 com\mycompany\operations\OperProducto.class
+com\mycompany\entities\User.class
 com\mycompany\operations\TiendaManagerDB.class
 com\mycompany\interfaces\IOperProducto.class
+com\mycompany\store\UserController.class
 com\mycompany\entities\Producto.class
+com\mycompany\store\ProductoController.class
 com\mycompany\entities\Deportivo.class

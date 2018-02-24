@@ -20,6 +20,3 @@ var createProduct = function () {
 var removeProduct = function (product) {
     deleteProduct(product.Id);
 }
-var removeOrder = function (order) {
-    deleteOrder(order.Id);
-}

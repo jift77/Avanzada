@@ -8,17 +8,21 @@ package com.mycompany.store;
 import com.mycompany.entities.Producto;
 import com.mycompany.operations.OperProducto;
 import java.util.List;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 /**
  *
  * @author georg
  */
 @Path("/productos")
-public class Productos {
+public class ProductoController {
     
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -28,10 +32,18 @@ public class Productos {
         return oper.ConsultarProductos();
     }
     
-    @GET
-    @Path("/prueba")
-    public String prueba()
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response addProduct(Producto producto)
     {
-        return "funcionando";
+        return null;
     }
+    
+    @DELETE
+    public Response deleteProduct(int productId)
+    {
+        return null;
+    }
+    
 }
