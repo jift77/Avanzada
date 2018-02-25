@@ -5,17 +5,13 @@
  */
 package com.mycompany.interfaces;
 
-import com.mycompany.entities.Producto;
-import java.util.List;
-
+import com.mycompany.entities.User;
 
 /**
  *
  * @author georg
  */
-public interface IOperProducto {
+public interface IOperUser {
     
-    public int InsertarProducto(Producto p);
-    public int BorrarProducto(int productoId);
-    public List<Producto> ConsultarProductos();
+    public boolean Autenticar(User user);
 }

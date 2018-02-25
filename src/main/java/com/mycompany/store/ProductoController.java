@@ -13,10 +13,9 @@ import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-
 /**
  *
  * @author georg
@@ -35,15 +34,19 @@ public class ProductoController {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response addProduct(Producto producto)
+    public void addProduct(Producto producto)
     {
-        return null;
+        OperProducto op = new OperProducto();
+        op.InsertarProducto(producto);
     }
     
     @DELETE
-    public Response deleteProduct(int productId)
+    @Path("/{productId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public void deleteProduct(@PathParam("productId") int productId)
     {
-        return null;
+        OperProducto op = new OperProducto();
+        op.BorrarProducto(productId);
     }
     
 }

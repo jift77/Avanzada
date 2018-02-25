@@ -38,9 +38,11 @@ public class OperProducto implements IOperProducto {
         if(con != null)
         {
             try {
-                PreparedStatement ps = con.prepareStatement("INSERT INTO producto (nombre, precio) values (?, ?)");
+                PreparedStatement ps = con.prepareStatement("INSERT INTO producto (nombre, descripcion, categoria, precio) values (?, ?, ? ,?)");
                 ps.setString(1, p.getNombre());
-                ps.setDouble(2, p.getPrecio());
+                ps.setString(2, p.getDescripcion());
+                ps.setString(3, p.getCategoria());
+                ps.setDouble(4, p.getPrecio());
                 
                 result = ps.executeUpdate();
                 db.desconectarse();
@@ -52,9 +54,31 @@ public class OperProducto implements IOperProducto {
         return result;
     }
     
+    @Override
+    public int BorrarProducto(int productoId)
+    {
+        int result = 0;
+        Connection con = db.conectarse();
+        if(con != null)
+        {
+            try {
+                PreparedStatement ps = con.prepareStatement("DELETE producto WHERE id = ?");
+                ps.setInt(1, productoId);
+                
+                result = ps.executeUpdate();
+                db.desconectarse();
+            } catch (SQLException ex) {
+                Logger.getLogger(OperProducto.class.getName()).log(Level.SEVERE, null, ex);
+                return 0;
+            }
+        }
+        return result;
+    }
+    
+    @Override
     public List<Producto> ConsultarProductos()
     {
-        List<Producto> result = new ArrayList<Producto>();
+        List<Producto> result = new ArrayList<>();
         
         result.add(new Tecnologia(1,"radio", 59, "Radio AM/FM marca Sony"));
         result.add(new Tecnologia(2,"televisor", 250, "LCD 52 pulgadas"));

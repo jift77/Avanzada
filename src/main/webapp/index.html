@@ -3,7 +3,6 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SportStore</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous" />
     <script src="Scripts/modernizr-2.6.2.js"></script>
@@ -29,20 +28,23 @@
         <div class="navbar navbar-inverse" role="navigation">
             <a class="navbar-brand" href="#">Tienda</a>
             <div class="navbar-right" style="margin: 0 10px">
-            <button class="btn btn-default btn-xs navbar-btn" data-bind="click: setView.bind($data, 'checkout'), enable: customerModel.cartCount() > 0">Checkout</button>
-        </div>
+                <button class="btn btn-default btn-xs navbar-btn" data-bind="click: setView.bind($data, 'checkout'), enable: customerModel.cartCount() > 0">Checkout</button>
+            </div>
             <div class="navbar-text navbar-right">
-        <b>Carrito:</b>
-        <span data-bind="text: customerModel.cartCount()"></span> Item(s),
-        <span data-bind="text: '$' + customerModel.cartTotal().toFixed(2)"></span>
-    </div>
+                <b>Carrito:</b>
+                <span data-bind="text: customerModel.cartCount()"></span> Item(s),
+                <span data-bind="text: '$' + customerModel.cartTotal().toFixed(2)"></span>
+            </div>
+            <div class="navbar-text navbar-right">
+                <a href="/store/Admin.html">Admin</a>
+            </div>
         </div>
         <div id="categories" class="col-xs-3">
             <button class="btn btn-block btn-default btn-lg" data-bind="click: setCategory.bind(null)">Home</button>
-        <div data-bind="foreach: customerModel.productCategories()">
-            <button class="btn btn-block btn-default btn-lg" data-bind="click: setCategory.bind($data), text: $data, css: { 'btn-primary' : $data == customerModel.selectedCategory() }"></button>
+            <div data-bind="foreach: customerModel.productCategories()">
+                <button class="btn btn-block btn-default btn-lg" data-bind="click: setCategory.bind($data), text: $data, css: { 'btn-primary' : $data == customerModel.selectedCategory() }"></button>
+            </div>
         </div>
-    </div>
         <div class="alert alert-danger col-xs-8" data-bind="visible: model.gotError(), text: model.error()"></div>
         <div class="col-xs-8">
         <div class="row panel" data-bind="visible: customerModel.currentView() == 'list'">

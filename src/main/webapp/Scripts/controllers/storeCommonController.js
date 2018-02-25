@@ -1,17 +1,26 @@
-﻿const authenticateUrl = "/authenticate"
+/* global model, sendRequest, adminModel */
+
+﻿const authenticateUrl = "/store/rest/user/";
 
 var authenticate = (successCallback) => {
     sendRequest(authenticateUrl, "POST", {
-        grant_type: "password",
-        username: model.username(),
+        userName: model.username(),
         password: model.password()
-    }, null)
+    })
     .done((data) => {
-        model.authenticated(true);
-        setAjaxHeaders({ Authorization: `bearer ${data.access_token}` });
-        if (successCallback) successCallback();
-        })
+        if(data === true)
+        {
+            model.authenticated(true);
+            if (successCallback) successCallback();
+        }
+        else
+        {
+            adminModel.loginMessage("Usuario o clave incorrectos");
+            adminModel.errorLogin(true);
+        }
+        }
+    )
     .fail((e) => {
         console.log(e);
-    })
-} 
+    });
+}; 

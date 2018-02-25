@@ -6,10 +6,13 @@
 package com.mycompany.operations;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
 
 /**
  *
@@ -18,22 +21,22 @@ import java.util.logging.Logger;
 public class TiendaManagerDB {
     
     Connection con = null;
+    private final String jndi = "jndi/tienda";
     
     public Connection conectarse()
     {        
-        String us = "tiendausu";
-        String clave = "laclave";
-        String driver = "org.postgresql.Driver";
-        String url = "jdbc:postgresql://localhost:5432/tiendadb";
-        
         try {
-            Class.forName(driver);
-            this.con = DriverManager.getConnection(url, us, clave);
-        } catch (SQLException | ClassNotFoundException ex) {
+            InitialContext icontext = new InitialContext();
+            Context context = (Context)icontext.lookup("java:comp/env");
+            DataSource data = (DataSource)context.lookup(jndi);
+            if(data != null)
+            {
+                 this.con = data.getConnection();
+            }
+        } catch (NamingException | SQLException ex) {
             Logger.getLogger(TiendaManagerDB.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        return con;
+        return this.con;
     }
     
     public void desconectarse()

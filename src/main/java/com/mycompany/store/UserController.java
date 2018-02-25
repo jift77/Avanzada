@@ -6,6 +6,7 @@
 package com.mycompany.store;
 
 import com.mycompany.entities.User;
+import com.mycompany.operations.OperUser;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -24,6 +25,7 @@ public class UserController {
     @Produces(MediaType.APPLICATION_JSON)
     public boolean Authenticate(User user)
     {
-        return true;
+        OperUser op = new OperUser();
+        return op.Autenticar(user);
     }
 }
